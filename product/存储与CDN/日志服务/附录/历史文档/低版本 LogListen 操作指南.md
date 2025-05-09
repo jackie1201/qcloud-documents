@@ -1,11 +1,11 @@
 
->! 本文档提供2.2.4以下版本的 LogListener 操作指南，后续可能不再维护，建议您更新到最新版本，最新版本安装操作详见 [LogListener 安装指南](https://cloud.tencent.com/document/product/614/17414)。
+>!本文档提供2.2.4以下版本的 LogListener 操作指南，后续可能不再维护，建议您更新到最新版本，最新版本安装操作详见 [LogListener 安装指南](https://cloud.tencent.com/document/product/614/17414)。
 
 #### 启动 LogListener
 
 进入`loglistener`安装目录，通过以下脚本启动 LogListener：
 
-```shell
+```plaintext
 cd loglistener/tools; ./start.sh
 ```
 

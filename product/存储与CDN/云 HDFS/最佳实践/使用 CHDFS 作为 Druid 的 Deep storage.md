@@ -1,7 +1,7 @@
 ## 环境依赖
 
-- [CHDFS_JAR](https://github.com/tencentyun/chdfs-hadoop-plugin)。
-- Druid 版本：Druid-0.12.1。
+- [CHDFS_JAR](https://github.com/tencentyun/chdfs-hadoop-plugin)
+- Druid 版本：Druid-0.12.1
 
 ## 下载与安装
 
@@ -66,3 +66,4 @@ druid.storage.storageDirectory=ofs://<mountpoint>/<druid-path>
 
 #### 开始使用
 依次启动 Druid 进程，Druid 数据就可加载到 CHDFS 中。
+

@@ -1,6 +1,6 @@
 
 ### TUIKit 源码是否支持 Androidx？
-TUIKit 源码暂不支持 Androidx。
+TUIKit 最新源码已经支持 Androidx。
 
 ### 登录报错 6012 或  TLSSDK exchange ticket fail ？
 
@@ -37,11 +37,6 @@ TUIKit 源码暂不支持 Androidx。
 
 返回此状态码时，是客户端在网络离线、超时或无网络访问时出现，6200 的定义为请求时没有网络，6201 的定义为响应时没有网络，遇到此状态码时，请检查网络或等待网络恢复后重试。
 
-### 使用 IM SDK v3.x 版本，收发短视频时返回错误码：116001？
-
-此错误码原因是未开通点播服务，请参考以下方法：
-1. 先检查即时通信 IM 控制台下短视频点播服务状态，确认状态是否为开通；
-2. 若需要超过 7 天以上的短视频存储，还需要检查云点播服务控制台，确认是否启用了云点播服务。
 
 ### 收发消息时返回错误码：20003？
 
@@ -66,10 +61,10 @@ TUIKit 源码暂不支持 Androidx。
 ### 上架 App Store 时，出现 x86_64, i386 架构错误该如何解决？
 该问题是由于 App Store 不支持 x86_64, i386 架构引起的，具体解决方法如下：
 1. 清空项目编译缓存：
- 选择【Product】>【clean】，按住Alt变成 clean build Folder...，等待操作完成。
+ 选择**Product**>**clean**，按住Alt变成 clean build Folder...，等待操作完成。
 2. 剔除 App Store 不支持的 x86_64 和 i386 架构：
- a. 选择【TARGETS】>【Build Phases】。
- b. 单击加号，选择【New Run Script Phase】。
+ a. 选择**TARGETS**>**Build Phases**。
+ b. 单击加号，选择**New Run Script Phase**。
  c. 添加如下代码：
  
 ```
@@ -108,3 +103,4 @@ APP_PATH="${TARGET_BUILD_DIR}/${WRAPPER_NAME}"
  ![](https://main.qcloudimg.com/raw/f343cb4d7674d58623dfa0097d2c6484.png)
 
 3. 重新打包上传。
+

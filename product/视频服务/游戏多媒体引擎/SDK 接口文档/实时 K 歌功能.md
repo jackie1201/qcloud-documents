@@ -1,3 +1,4 @@
+
 为方便开发者调试和接入腾讯云游戏多媒体引擎产品 API，这里向您介绍游戏多媒体引擎实时语音 K 歌功能的接入技术文档。
 
 
@@ -57,6 +58,8 @@ Windows 端使用 K 歌功能，需要下载头文件后，将头文件 tmg_sdk_
 ### 开始录制
 调用 StartRecord 接口开始录制。录制完成会有回调函数，需要监听  ITMG_MAIN_EVENT_TYPE_RECORD_COMPLETED。
 
+录制时候请保证麦克风已经打开（设备及上行都需要打开），另外保证文件路径是可访问的，SDK 不会主动创建文件夹。
+
 #### 函数原型  
 ```
 int StartRecord(int type, String dstFile, String accMixFile, String accPlayFile)
@@ -64,10 +67,21 @@ int StartRecord(int type, String dstFile, String accMixFile, String accPlayFile)
 
 |参数     | 类型         |意义|
 | ------------- |:-------------:|-------------
-| type    		|int		|K歌场景下，此参数传 ITMG_AUDIO_RECORDING_KTV。|
+| type    		|int		|K歌场景下，此参数传 ITMG_AUDIO_RECORDING_KTV。如果是纯录制 MP3 文件，请使用 ITMG_AUDIO_RECORDING_SELF|
 | dstFile  		|String	|目标文件路径，用于保存录制完成的音乐。|
 | accMixFile	|String 	|一般为没有原声的伴奏，用于和人声合成音乐文件。|
 | accPlayFile	|String 	|用于播放的音乐文件，正常情况下与 accMixFile 为同一个文件。但在用户不熟悉歌曲时，可以填入带原唱的音乐文件路径，此时播放内容为带原唱的音乐，而合成为不带原声的伴奏。|
+
+#### 示例代码
+
+```
+//Android
+ITMGAudioRecordCtrl.GetInstance().StartRecord(ITMGAudioRecordCtrl.ITMG_AUDIO_RECORDING_KTV, dstFile, accMixFile, accPlayFile);
+//iOS
+#import "GMESDK/TMGEngine_adv.h"
+[[ITMGAudioRecordCtrl GetInstance]StartPreview]
+```
+
 
 
 ### 停止录制
@@ -196,6 +210,7 @@ int ResumePreview()
 ```
 int SetPreviewTimeByMs(int time)
 ```
+
 |参数     | 类型         |意义|
 | ------------- |:-------------:|-------------
 | time    		|int |预览文件的时间点，单位毫秒。|
@@ -268,6 +283,7 @@ int SetMixWieghts(float mic, float acc)
 ```
 int AdjustAudioTimeByMs(int time)
 ```
+
 |参数     | 类型         |意义|
 | ------------- |:-------------:|-------------
 | time    		|int |人声相对于伴奏的偏移时间，单位ms。大于0为向后移动，小于0为向前移动。|
@@ -283,4 +299,6 @@ int SetRecordKaraokeType(int type)
 |参数     | 类型         |意义|
 | ------------- |:-------------:|-------------
 | type    		|int |此类型同等于实时语音音效中的K歌音效特效类型，具体可参考 [K 歌音效特效](https://cloud.tencent.com/document/product/607/34378#k-.E6.AD.8C.E9.9F.B3.E6.95.88.E7.89.B9.E6.95.88)。|
+
+
 

@@ -1,4 +1,4 @@
-Spark 作为 Apache 高级的开源项目，是一个快速、通用的大规模数据处理引擎，和 Hadoop 的 MapReduce 计算框架类似，但是相对于 MapReduce，Spark 凭借其可伸缩、基于内存计算等特点以及可以直接读写 Hadoop 上任何格式数据的优势，进行批处理时更加高效，并有更低的延迟。实际上，Spark 已经成为轻量级大数据快速处理的统一平台，各种不同的应用，如实时流处理、机器学习、交互式查询等，都可以通过 Spark 建立在不同的存储和运行系统上。
+Spark 作为 Apache 高级的开源项目，是一个快速、通用的大规模数据处理引擎，与 Hadoop 的 MapReduce 计算框架类似，但是相对于 MapReduce，Spark 凭借其可伸缩、基于内存计算等特点以及可以直接读写 Hadoop 上任何格式数据的优势，进行批处理时更加高效，并有更低的延迟。实际上，Spark 已经成为轻量级大数据快速处理的统一平台，各种不同的应用，如实时流处理、机器学习、交互式查询等，都可以通过 Spark 建立在不同的存储和运行系统上。
 
 Spark 是基于内存计算的大数据并行计算框架。Spark 基于内存计算，提高了在大数据环境下数据处理的实时性，同时保证了高容错性和高可伸缩性，允许用户将 Spark 部署在大量廉价硬件之上，形成集群。
 
@@ -6,16 +6,14 @@ Spark 是基于内存计算的大数据并行计算框架。Spark 基于内存�
 
 ## 1. 开发准备
 - 因为任务中需要访问腾讯云对象存储（COS），所以需要在 COS 中先 [创建一个存储桶（Bucket）](https://cloud.tencent.com/document/product/436/13309)。
-- 确认您已经开通了腾讯云，并且创建了一个 EMR 集群。在创建 EMR 集群的时候需要在软件配置界面选择 Spark 组件，并且在基础配置页面勾选“开启COS”，在下方填写自己的 SecretId 和 SecretKey。SecretId 和 SecretKey 可以在 [API 密钥管理界面](https://console.cloud.tencent.com/cam/capi) 查看。如果还没有密钥，请单击【新建密钥】建立一个新的密钥。
+- 确认您已开通腾讯云，并且创建了一个 EMR 集群。在创建 EMR 集群的时候需要在软件配置界面选择 Spark 组件，并且在**实例信息 > 基础配置**中开启对象存储的授权。
 
-## 2. 使用 Maven 来创建您的工程
-在本次演示中，不再采用系统自带的演示程序，而是自己建立工程编译打包之后上传到 EMR 集群运行。
+## 2. 使用 Maven 创建工程
+在本次演示中，不再采用系统自带的演示程序，而是自己建立工程编译打包之后上传到 EMR 集群运行。推荐您使用 Maven 来管理您的工程。Maven 是一个项目管理工具，能够帮助您方便的管理项目的依赖信息，即它可以通过 pom.xml 文件的配置获取 jar 包，而不用去手动添加。
 
-推荐您使用 Maven 来管理您的工程。Maven 是一个项目管理工具，能够帮助您方便的管理项目的依赖信息，即它可以通过 pom.xml 文件的配置获取 jar 包，而不用去手动添加。
+首先下载并安装 Maven，配置 Maven 的环境变量。如果您使用 IDE，请在 IDE 中设置 Maven 相关配置。
 
-首先下载并安装 Maven，配置 Maven 的环境变量，如果您使用 IDE，请在 IDE 中设置 Maven 相关配置。
-
-###	 新建一个 Maven 工程
+### 新建一个 Maven 工程
 
 在本地 shell 下进入您想要新建工程的目录，例如`D://mavenWorkplace`中，输入如下命令新建一个 Maven 工程：
 ```
@@ -83,7 +81,7 @@ simple
 在 src>main>Java 下右键新建一个Java Class，输入您的 Class 名，这里使用 WordCountOnCos，在 Class 添加样例代码：
 ```
 import java.util.Arrays;
-import org.apache.spark.SparkConf
+import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import scala.Tuple2;
@@ -133,21 +131,20 @@ scp $localfile root@公网IP地址:$remotefolder
 然后进入您存放 jar 包的文件夹下，执行以下指令：
 ```
 [hadoop@10spark]$ spark-submit    --class    $WordCountOnCOS    --master 
-yarn-cluster $packagename.jar cosn:// $bucketname /$testfile cosn:// $bucketname 
-/output
+yarn-cluster $packagename.jar cosn://$bucketname/$testfile cosn://$bucketname/output
 ```
 其中 $WordCountOnCOS 为您的 Java Class 名字，$packagename 为您新建 Maven 工程中生成的 jar 包名字，$bucketname 为您的存储桶名和路径，$testfile 为您要统计的文件名。最后输出的文件在 output 这个文件夹中，**这个文件夹事先不能被创建，不然运行会失败**。
 
 运行成功后，在指定的存储桶和文件夹下可以看到 wordcount 的结果。
 ```
-[hadoop@172 /]$ hadoop fs -ls cosn:// $bucketname /output
+[hadoop@172 /]$ hadoop fs -ls cosn://$bucketname/output
 Found 3 items
--rw-rw-rw- 1 hadoop Hadoop  0 2018-06-28 19:20 cosn:// $bucketname /output/_SUCCESS
--rw-rw-rw- 1 hadoop Hadoop 681 2018-06-28 19:20 cosn:// $bucketname /output/part-00000
--rw-rw-rw- 1 hadoop Hadoop 893 2018-06-28 19:20 cosn:// $bucketname /output/part-00001
+-rw-rw-rw- 1 hadoop Hadoop  0 2018-06-28 19:20 cosn://$bucketname/output/_SUCCESS
+-rw-rw-rw- 1 hadoop Hadoop 681 2018-06-28 19:20 cosn://$bucketname/output/part-00000
+-rw-rw-rw- 1 hadoop Hadoop 893 2018-06-28 19:20 cosn://$bucketname/output/part-00001
 
 [hadoop@172 demo]$ hadoop fs -cat cosn://$bucketname/output/part-00000
-18/07/05 17:35:01 INFO cosnative.NativeCosFileSystem: Opening 'cosn:// $bucketname/output/part-00000' for reading
+18/07/05 17:35:01 INFO cosnative.NativeCosFileSystem: Opening 'cosn://$bucketname/output/part-00000' for reading
 (under,1)
 (this,3)
 (distribution,2)

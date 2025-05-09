@@ -1,11 +1,12 @@
+
 ## 简介
 TcaplusDB 服务化 API 是应用访问游戏数据库 TcaplusDB 的数据访问入口，是应用存取游戏数据库 TcaplusDB 中业务数据的编程接口。当前 TcaplusDB 主要使用基于 Google Protocol Buffer（Protobuf） 做通讯和数据元定义协议。
 
 ## 流程
-您在 [控制台](https://console.cloud.tencent.com/tcaplusdb/table) 开通业务创建完表后，详情页会提供接入ID，访问密码，内网 IP 地址，以及 Protobuf 表管理页会提供已经创建的表名称和表格组 ID 等信息。使用 TcaplusDB C++ API，应用可以操作属于此集群下的多个表。
+您在 [控制台](https://console.cloud.tencent.com/tcaplusdb/table) 开通业务创建完表后，详情页会提供接入ID，访问密码，内网 IPV4 地址，以及 Protobuf 表管理页会提供已经创建的表名称和表格组 ID 等信息。使用 TcaplusDB C++ API，应用可以操作属于此集群下的多个表。
 
 ## 模块
-您可以使用 Protobuf 协议来定义符合 TcaplusDB 规范的表，将表定义的元文件传到 TcaplusDB 控制台中进行创建新表或修改已经存在的表，成功后即可通过 TcaplusDB Protobuf API 进行表数据记录的读写操作，当前 TcaplusDB Protobuf API 支持的操作如下表：
+您可以 Protobuf 协议来定义符合 TcaplusDB 规范的表，将表定义的元文件传到 TcaplusDB 控制台中进行创建新表或修改已经存在的表，成功后即可通过 TcaplusDB Protobuf API 进行表数据记录的读写操作，当前 TcaplusDB Protobuf API 支持的操作如下表：
 
 | 操作 | 功能描述 |
 |---------|---------|
@@ -50,7 +51,7 @@ extend google.protobuf.FieldOptions
 7. 主键字段当前只能是 protobuf 规定的标量类型（Scalar Value Type），不能包括其它复合类型，自定义类型等。
 
 ## 常用接口说明
-- **int Get(::google::protobuf::Message &msg);**
+- `int Get(::google::protobuf::Message &msg);`
 ```
  @brief 根据用户输入 req 中的 index 名称，msg 值，offset 以及 limit，通过索引获取多个记录的值填充到 res 中的 vec 结构中，并返回总记录数以及剩余记录数
  @param [INOUT] req   用户输入的 req
@@ -59,7 +60,7 @@ extend google.protobuf.FieldOptions
  @retval 0    成功
 ```
 
-- **int BatchGet(std::vector< ::google::protobuf::Message * > &msgs);**
+- `int BatchGet(std::vector< ::google::protobuf::Message * > &msgs);`
 ```
   @brief 根据用户输入 msgs 中的字段值，批量获取 msg 消息的字段值，并填充到 msgs 中
   @param [INOUT] msgs 用户输入的字段列表，返回指定字段填到 msgs 中
@@ -67,7 +68,7 @@ extend google.protobuf.FieldOptions
   @retval 0    成功，至少有一个字段查询成功才会返回 0
 ```
 
-- **int Add(::google::protobuf::Message \*msg);**
+- `int Add(::google::protobuf::Message \*msg);`
 ```
  @brief 根据用户输入 msg 中的字段，插入 msg 数据记录，如果字段存在报错退出
  @param [INOUT] msg   用户输入的字段值，以及需要插入的数据记录msg
@@ -75,7 +76,7 @@ extend google.protobuf.FieldOptions
  @retval 0    成功
 ```
 
-- **int Set(const ::google::protobuf::Message &msg);**
+- `int Set(const ::google::protobuf::Message &msg);`
 ```
  @brief 根据用户输入 msg 中的字段，如果记录存在更新指定记录的值，否则插入指定记录
  @param [INOUT] msg   用户输入的字段值，以及需要设置的数据记录 msg
@@ -83,7 +84,7 @@ extend google.protobuf.FieldOptions
  @retval 0    成功
 ```
 
-- **int Del(const ::google::protobuf::Message &msg);**
+- `int Del(const ::google::protobuf::Message &msg);`
 ```
   @brief 根据用户输入 msg 中的字段值，删除 msg       
   @param [IN] msg   用户输入的字段值，返回指定字段填到 msg 中
@@ -91,7 +92,7 @@ extend google.protobuf.FieldOptions
   @retval 0    成功，至少有一个字段查询成功才会返回 0
 ```
 
-- **int FieldInc(::google::protobuf::Message &msg, const std::set &dottedpaths);**
+- `int FieldInc(::google::protobuf::Message &msg, const std::set &dottedpaths);`
 ```
  @brief 根据用户输入 msg 中的字段值和 values 增量值，和 dottedpaths 指定的字段名称，增加 msg 指定字段的值。字段为数值型变量
  @param [INOUT] msg   数据记录 msg，包含用户输入的字段值，返回增量字段的结果值更新到 msg 中
@@ -100,7 +101,7 @@ extend google.protobuf.FieldOptions
  @retval 0    成功，全部字段更新成功
 ```
 
-- **int FieldGet(const std::set<std\::string> &dottedpaths, ::google::protobuf::Message \*msg, std::set<std\::string> \*failedpaths);**
+- `int FieldGet(const std::set<std::string> &dottedpaths, ::google::protobuf::Message *msg, std::set<std::string> *failedpaths);`
 ```
  @brief 根据用户输入 msg 中的字段值，和 dottedpaths 指定的字段名称，获取指定字段的值，并填充到 msg 中
  @param [INOUT] msg   数据记录 msg，包含用户输入的字段值，返回指定字段填到 msg 中
@@ -110,7 +111,7 @@ extend google.protobuf.FieldOptions
  @retval 0    成功，至少有一个字段查询成功才会返回0
 ```
 
-- **int FieldSet(::google::protobuf::Message &msg, const std::set &dottedpaths);**
+- `int FieldSet(::google::protobuf::Message &msg, const std::set &dottedpaths);`
 ```
  @brief 根据用户输入的 msg 中的 字段值，和 dottedpaths 指定的字段名称，更新指定字段的值。服务端不存在的值会追加进去
  @param [IN] msg 用户输入的字段值，返回指定字段填到 msg 中
@@ -119,7 +120,7 @@ extend google.protobuf.FieldOptions
  @retval 0    成功，全部字段更新成功
 ```
 
-- **int Get(NS_TCAPLUS_PROTOBUF_API::IndexGetRequest& req, NS_TCAPLUS_PROTOBUF_API::IndexGetResponse \*res);**
+- `int Get(NS_TCAPLUS_PROTOBUF_API::IndexGetRequest& req, NS_TCAPLUS_PROTOBUF_API::IndexGetResponse *res);`
 ```
  @brief 根据用户输入 req 中的 index 名称，msg 值，offset 以及 limit，通过索引获取多个记录的值填充到 res 中的 vec 结构中，并返回总记录数以及剩余记录数
  @param [INOUT] req   用户输入的 req
@@ -128,7 +129,7 @@ extend google.protobuf.FieldOptions
  @retval 0    成功
 ```
 
-- **int Traverse(::google::protobuf::Message \*msg, TcaplusTraverseCallback \*cb);**
+- `int Traverse(::google::protobuf::Message *msg, TcaplusTraverseCallback \*cb);`
 ```
  @brief 遍历表，消息会填充到 msg 中
  @param [INOUT] msg   返回指定字段填到 msg 中
@@ -144,6 +145,7 @@ extend google.protobuf.FieldOptions
 - 如果待查询的字段原记录中不存在，则会返回字段默认值。
 
 ### BatchGet 操作约束
+- 批量查询操作必须经由 tcaproxy 进行消息路由处理，tcapsvr 进程不支持批量查询操作。
 - 一个批量查询请求返回一个批量查询结果，批量查询的超时时间为10秒。
 - 批量查询结果记录数同请求中记录数，查询不存在或者查询失败的记录也会在结果集中存在一条空的记录，因此需要通过 FetchRecord 进行记录获取。
 - 批量查询结果集总大小不能超过256K，否则超过大小记录内容会无法返回，会返回空记录内容。
@@ -166,9 +168,8 @@ extend google.protobuf.FieldOptions
 - dottedpaths 所在 set 中的每个元素的长度不能超过1023字节。
 - dottedpaths 所在 set 中的第个元素代表的字段嵌套不能超过32。
 
-
 ## SDK 源文件目录结构
-
+```
     `-- release
         `-- x86_64
             |-- docs                                   文档目录
@@ -189,3 +190,4 @@ extend google.protobuf.FieldOptions
             |-- lib                                    本 C++ SDK 的库文件目录
             |   `-- libtcaplusprotobufapi.a            本 C++ SDK 的库文件, 程序最终链接库需包含
             `-- version                                本 C++ SDK 的版本记录文件
+```

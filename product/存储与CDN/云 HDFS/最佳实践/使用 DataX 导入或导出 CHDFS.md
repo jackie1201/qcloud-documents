@@ -1,7 +1,7 @@
 ## 环境依赖
 
-- [CHDFS_JAR](https://github.com/tencentyun/chdfs-hadoop-plugin)。
-- DataX 版本：DataX-3.0。
+- [CHDFS_JAR](https://github.com/tencentyun/chdfs-hadoop-plugin)
+- DataX 版本：DataX-3.0
 
 ## 下载与安装
 
@@ -133,4 +133,5 @@ bin/datax.py job/hdfs_job.json
 读出记录总数                    :                   2
 读写失败总数                    :                   0
 ```
+
 

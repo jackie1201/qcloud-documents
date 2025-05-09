@@ -1,14 +1,14 @@
 ## 功能概览
-视频编辑包括视频裁剪、时间特效（慢动作、倒放、重复）、滤镜特效（动感光波，暗黑幻影，灵魂分出窍，画面分裂）、滤镜风格（唯美，粉嫩，蓝调等）、音乐混音、动态贴纸、静态贴纸、气泡字幕等功能。
+视频编辑包括视频裁剪、时间特效（慢动作、倒放、重复）、滤镜特效（动感光波，暗黑幻影，灵魂出窍，画面分裂）、滤镜风格（唯美，粉嫩，蓝调等）、音乐混音、动态贴纸、静态贴纸、气泡字幕等功能。
 
-## 相关类介绍
+## 相关类介绍 
 | 类名           | 功能  |
-| ------------- | --------- |
+| ------------- | --------- | 
 | `TXVideoInfoReader`| 媒体信息获取 |
 | `TXVideoEditer` | 视频编辑 |
 
 ## 使用说明
-视频编辑的基本使用流程如下：
+视频编辑的基本使用流程如下： 
 
 1. 设置视频路径。
 2. 视频导入。
@@ -66,18 +66,18 @@ public void getThumbnail(int count, int width, int height, boolean fast, TXThumb
 ```
 
 参数 @param fast 可以使用两种模式：
->- 快速出图：输出的缩略图速度比较快，但是与视频对应不精准，传入参数 true。
->- 精准出图：输出的缩略图与视频时间点精准对应，但是在高分辨率上速度慢一些，传入参数 false。
+- 快速出图：输出的缩略图速度比较快，但是与视频对应不精准，传入参数 true。
+- 精准出图：输出的缩略图与视频时间点精准对应，但是在高分辨率上速度慢一些，传入参数 false。
 
 完整示例如下：
 ```
 mTXVideoEditer.getThumbnail(TCVideoEditerWrapper.mThumbnailCount, 100, 100, false, mThumbnailListener);
 
 private TXVideoEditer.TXThumbnailListener mThumbnailListener = new TXVideoEditer.TXThumbnailListener() {
- 	@Override
+    @Override
         public void onThumbnail(int index, long timeMs, final Bitmap bitmap) {
-        	Log.i(TAG, "onThumbnail: index = " + index + ",timeMs:" + timeMs);
-		//将缩略图放入图片控件上
+            Log.i(TAG, "onThumbnail: index = " + index + ",timeMs:" + timeMs);
+        //将缩略图放入图片控件上
         }
     };
 ```
@@ -112,7 +112,8 @@ txVideoEditer.getThumbnailList(list, 200, 200);
 ### 1. 快速导入
 快速导入视频，可以直接观看到视频编辑的预览效果，支持视频裁剪、时间特效（慢动作）、滤镜特效、滤镜风格、音乐混音、动态贴纸、静态贴纸、气泡字幕等功能，不支持的功能有时间特效（重复、倒放）。
 
-### <span id ="p1"></span> 2. 全功能导入
+[](id:p1)
+### 2. 全功能导入
 全功能导入，支持所有的功能，包括时间特效（重复、倒放）。需要为视频先预处理操作。
 经过全功能导入后的视频可以精确的 seek 到每个时间点，看到对应的画面，预处理操作同时还可以精确的生成当前时间点视频缩略图。
 
@@ -161,7 +162,7 @@ mTXVideoEditer.processVideo();                                               // 
 ```
 
 ## 编辑预览
-视频编辑提供了 定点预览（将视频画面定格在某一时间点）与区间预览（循环播放某一时间段 A<=>B 内的视频片段）两种效果预览方式，使用时需要给 SDK 绑定一个 UIView 用于显示视频画面。
+视频编辑提供了 定点预览（将视频画面定格在某一时间点）与区间预览（播放某一时间段 A<=>B 内的视频片段）两种效果预览方式，使用时需要给 SDK 绑定一个 UIView 用于显示视频画面。
 
 ### 1. 设置预览播放的 Layout
 ```
@@ -178,7 +179,7 @@ public final static int PREVIEW_RENDER_MODE_FILL_EDGE = 2;        // 适应模�
 public void previewAtTime(long timeMs);
 ```
 ### 3. 区间预览
-TXVideoEditer 的 startPlayFromTime 函数用于循环播放某一时间段 A<=>B 内的视频片段。
+TXVideoEditer 的 startPlayFromTime 函数用于播放某一时间段 A<=>B 内的视频片段。
 ```
 // 播放某一时间段的视频，从 startTime 到 endTime 的视频片段
 public void startPlayFromTime(long startTime, long endTime);
@@ -188,8 +189,10 @@ public void startPlayFromTime(long startTime, long endTime);
 // 暂停播放视频
 public void pausePlay();
 
+
 // 继续播放视频
 public void resumePlay();
+
 
 // 停止播放视频
 public void stopPlay();
@@ -268,6 +271,7 @@ public void setVideoBitrate(int videoBitrate);
   */
 public void setCutFromTime(long startTime, long endTime)
 
+
 // ...
 // 生成最终的视频文件
 public void generateVideo(int videoCompressed, String videoOutputPath)
@@ -279,6 +283,7 @@ VIDEO_COMPRESSED_360P ——压缩至360P分辨率（360*640）
 VIDEO_COMPRESSED_480P ——压缩至480P分辨率（640*480）
 VIDEO_COMPRESSED_540P ——压缩至540P分辨率 (960*540)
 VIDEO_COMPRESSED_720P ——压缩至720P分辨率 (1280*720)
+VIDEO_COMPRESSED_1080P ——压缩至1080P分辨率 (1920*1080)
 ```
 如果源视频的分辨率小于设置的常量对应的分辨率，按照原视频的分辨率。
 如果源视频的分辨率大于设置的常量对象的分辨率，进行视频压缩至相应分辨率。

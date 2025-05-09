@@ -59,8 +59,8 @@ Action=AssumeRoleWithSAML
     "data": {
         "credentials": {
             "sessionToken": "d154fa74af184dfac3deb3a729c103a3003d52f840001",
-            "tmpSecretId": "AKID7byWjIxUdUuRfhuctpd2T7XLpkCeqMub",
-            "tmpSecretKey": "LN1yqrCt2oejxQB7AQsL8iP9VE4hzfZ9"
+            "tmpSecretId": "************************************************************",
+            "tmpSecretKey": "***********************************************************"
         },
         "expiredTime": 1541594376,
         "expiration": "2018-11-07T12:39:36Z"

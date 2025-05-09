@@ -1,16 +1,19 @@
 ## 命名空间
 
-Namespace=QCE/NAT_GATEWAY
+Namespace = QCE/NAT_GATEWAY
 
 ## 监控指标
-
-| 指标英文名      | 指标中文名 | 单位   | 维度          |
-| ------------ | ----- | ---- | ----------- |
-| Outbandwidth | 外网出带宽 | Mbps | natId |
-| Inbandwidth  | 外网入带宽 | Mbps | natId |
-| Outpkg       | 出包量   | 个/秒  | natId |
-| Inpkg        | 入包量   | 个/秒  | natId |
-| Conns        | 连接数   | 个/秒  | natId |
+| 指标英文名           | 指标中文名       | 指标含义                     | 单位  | 维度  | 统计粒度                      |
+| -------------------- | ---------------- | ---------------------------- | ----- | ----- | ----------------------------- |
+| OutBandwidth         | 外网出带宽       | NAT 网关平均每秒出流量       | Mbps  | natId | 10s、60s、300s、3600s、86400s |
+| InBandwidth          | 外网入带宽       | NAT 网关平均每秒入流量       | Mbps  | natId | 10s、60s、300s、3600s、86400s |
+| InPkg                | 外网入包量       | NAT 网关平均每秒入包量       | pps   | natId | 10s、60s、300s、3600s、86400s |
+| OutPkg               | 外网出包量       | NAT 网关平均每秒出包量       | pps   | natId | 10s、60s、300s、3600s、86400s |
+| Conns                | 外网络连接数     | NAT 网关的实时并发数         | 个/秒 | natId | 10s、60s、300s、3600s、86400s |
+| Droppkg              | 连接数超限丢包量 | NAT 网关连接数超限累计丢包量 | 个    | natId | 60s、300s、3600s、86400s      |
+| ConnsUsage           | 并发连接数使用率 | 网络连接数使用率             | %     | natId | 60s、300s、3600s              |
+| Egressbandwidthusage | 出带宽使用率     | 外网入带宽使用率             | %     | natId | 60s、300s、3600s              |
+| WanInByteUsage       | 入带宽使用率     | 外网出带宽使用率             | %     | natId | 60s、300s、3600s、            |
 
 > ?每个指标对应的统计粒度（Period）可取值不一定相同，可通过 [DescribeBaseMetrics](https://cloud.tencent.com/document/product/248/30351) 接口获取每个指标支持的统计粒度信息。
 
@@ -27,4 +30,5 @@ Namespace=QCE/NAT_GATEWAY
 &Namespace=QCE/NAT_GATEWAY
 &Instances.N.Dimensions.0.Name=natId
 &Instances.N.Dimensions.0.Value 为 NAT 网关 ID
+
 

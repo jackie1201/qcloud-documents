@@ -1,4 +1,9 @@
+
+
+
+
 ## 操作场景
+
 本文档指导您如何授权访问消息队列（CMQ）和配置消息队列 CMQ。
 
 ## 前提条件
@@ -39,3 +44,4 @@ CMQ 接收消息的相关 SDK 介绍如下：
 - [BatchDeleteMessage](https://cloud.tencent.com/document/api/406/5841)：从队列中删除多条消息，一次最多删除16条。
 
 消息队列的 SDK DEMO 使用，更新详情请参见消息队列提供的 [SDK DEMO 文档](https://cloud.tencent.com/document/product/406/6107)。
+

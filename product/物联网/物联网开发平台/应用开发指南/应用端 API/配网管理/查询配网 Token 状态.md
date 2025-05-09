@@ -1,3 +1,5 @@
+
+
 ## 1. 接口描述
 接口请求域名：`iot.cloud.tencent.com/api/exploreropen/tokenapi`
 本接口（AppGetDeviceBindTokenState）用于查询配网 Token 的当前状态。
@@ -64,3 +66,5 @@ content-type: application/json
 |InvalidParameterValue.TokenNotExist|Token 不存在|
 |InvalidParameterValue.TokenIsExpire|Token 已过期|
 |InvalidParameterValue.ReadTokenInfoError|Token 读错误|
+
+

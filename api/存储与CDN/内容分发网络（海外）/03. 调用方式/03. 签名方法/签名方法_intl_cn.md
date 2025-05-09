@@ -16,12 +16,16 @@
 
 ## 2. 生成签名串
 
+>!
+>- 代码泄露可能会导致 SecretId 和 SecretKey 泄露，并威胁账号下所有资源的安全性。
+>- 以下代码示例仅供参考，建议采用更安全的方式来使用密钥，请参见：https://cloud.tencent.com/document/product/1278/85305。
+
 有了安全凭证SecretId 和 SecretKey后，就可以生成签名串了。下面给出了一个生成签名串的详细过程。
 
 假设用户的 SecretId 和 SecretKey 分别是：
 
->SecretId: AKIDT8G5AsY1D3MChWooNq1rFSw1fyBVCX9D
->SecretKey: pxPgRWDbCy86ZYyqBTDk7WmeRZSmPco0
+>SecretId: \*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*
+>SecretKey: \*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*
 
 **注意：这里只是示例，请用户根据自己实际的SecretId和SecretKey进行后续操作！**
 以 [查询域名信息](https://cloud.tencent.com/document/product/228/3937)(DescribeCdnHosts) 请求为例，当用户调用这一接口时，其请求参数可能如下:
@@ -29,7 +33,7 @@
 | 参数名称   | 中文   | 参数值   |
 | ------ | ---- | ---- |
 | Action | 方法名    | DescribeCdnHosts  |
-| SecretId  | 密钥Id    | AKIDT8G5AsY1D3MChWooNq1rFSw1fyBVCX9D  |
+| SecretId  | 密钥Id    | \*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\* |
 | Timestamp | 当前时间戳 | 1463122059 |
 | Nonce | 随机正整数 | 13029 |
 | offset | 偏移量 | 0 |
@@ -45,7 +49,7 @@
 {
     'Action' : 'DescribeCdnHosts',
     'Nonce' : 13029,
-    'SecretId' : 'AKIDT8G5AsY1D3MChWooNq1rFSw1fyBVCX9D',
+    'SecretId' : '****************************************',
     'Timestamp' : 1463122059,
     'limit' : 10,
     'offset' : 0
@@ -64,7 +68,7 @@
 然后将格式化后的各个参数用"&"拼接在一起，最终生成的请求字符串为:
 
 ```
-Action=DescribeCdnHosts&Nonce=13029&SecretId=AKIDT8G5AsY1D3MChWooNq1rFSw1fyBVCX9D&Timestamp=1463122059&limit=10&offset=0
+Action=DescribeCdnHosts&Nonce=13029&SecretId=****************************************&Timestamp=1463122059&limit=10&offset=0
 ```
 
 ### 2.3 拼接签名原文字符串
@@ -84,13 +88,13 @@ Action=DescribeCdnHosts&Nonce=13029&SecretId=AKIDT8G5AsY1D3MChWooNq1rFSw1fyBVCX9
 若为 GET 请求，示例的拼接结果为：
 
 ```
-GETcdn.api.qcloud.com/v2/index.php?Action=DescribeCdnHosts&Nonce=13029&SecretId=AKIDT8G5AsY1D3MChWooNq1rFSw1fyBVCX9D&Timestamp=1463122059&limit=10&offset=0
+GETcdn.api.qcloud.com/v2/index.php?Action=DescribeCdnHosts&Nonce=13029&SecretId=****************************************&Timestamp=1463122059&limit=10&offset=0
 ```
 
 若为 POST 请求，示例的拼接结果为：
 
 ```
-POSTcdn.api.qcloud.com/v2/index.php?Action=DescribeCdnHosts&Nonce=13029&SecretId=AKIDT8G5AsY1D3MChWooNq1rFSw1fyBVCX9D&Timestamp=1463122059&limit=10&offset=0
+POSTcdn.api.qcloud.com/v2/index.php?Action=DescribeCdnHosts&Nonce=13029&SecretId=****************************************&Timestamp=1463122059&limit=10&offset=0
 ```
 
 
@@ -102,8 +106,8 @@ POSTcdn.api.qcloud.com/v2/index.php?Action=DescribeCdnHosts&Nonce=13029&SecretId
 具体代码如下，以 PHP 语言为例：
 
 ```
-$secretKey = 'pxPgRWDbCy86ZYyqBTDk7WmeRZSmPco0';
-$srcStr = 'GETcdn.api.qcloud.com/v2/index.php?Action=DescribeCdnHosts&Nonce=13029&SecretId=AKIDT8G5AsY1D3MChWooNq1rFSw1fyBVCX9D&Timestamp=1463122059&limit=10&offset=0';
+$secretKey = '****************************************';
+$srcStr = 'GETcdn.api.qcloud.com/v2/index.php?Action=DescribeCdnHosts&Nonce=13029&SecretId=****************************************&Timestamp=1463122059&limit=10&offset=0';
 $signStr = base64_encode(hash_hmac('sha1', $srcStr, $secretKey, true));
 echo $signStr
 ```

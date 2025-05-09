@@ -1,4 +1,5 @@
 
+
 为方便开发者调试和接入腾讯云游戏多媒体引擎产品 API，这里向您介绍 GME Authbuffer 的编译技术文档。
 
 ## 操作步骤
@@ -29,3 +30,4 @@
 #### 6. 运行可执行文件
 可执行文件路径在：`[个人文件夹]/authbuffer/bin/linux/libAuthbuffer.so`
 ![image](https://main.qcloudimg.com/raw/2f1d265631137955d1ab890790ab8d14.png)
+

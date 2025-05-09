@@ -37,7 +37,7 @@
 | businessId         | 否      | Uint     | 业务 ID 网站或应用在多个业务中使用此服务，通过此 ID 区分统计数据。 |
 | wxSubType  | 否      | int      |<li>1：微信公众号。</li><li>2：微信小程序。</li>                                |
 | randNum        | 否      | String   | Token 签名随机数，微信小程序必填，建议16个字符。                |
-| wxToken       | 否      | String   | <li>wxSubType = 2：微信小程序场景，该字段为以 ssesion_key 为 key 去签名随机数 radnNum 得到的值（ hmac_sha256 签名算法）。</li><li>wxSubType = 1：微信公众号或第三方登录，则为授权的 access_token（注意：不是普通 access_token，具体看 [微信官方文档](https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140842)），而且获取网页版本的 access_token 时，scope 字段必需填写 snsapi_userinfo。</li> |
+| wxToken       | 否      | String   | <li>wxSubType = 2：微信小程序场景，该字段为以 ssesion_key 为 key 去签名随机数 randNum 得到的值（ hmac_sha256 签名算法）。</li><li>wxSubType = 1：微信公众号或第三方登录，则为授权的 access_token（注意：不是普通 access_token，具体看 [微信官方文档](https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140842)），而且获取网页版本的 access_token 时，scope 字段必需填写 snsapi_userinfo。</li> |
 | checkDevice  | 否      | Int      | 是否识别设备异常：<li>0：不识别。</li><li>1：识别。</li>                             |
 
 ## 输出参数
@@ -52,7 +52,7 @@
 | postTime     | String | 操作时间戳，单位：秒。                                         |
 | uid              | String | 用户 ID 不同的 accountType 对应不同的用户 ID。如果是 QQ，则填入对应的 openid，微信用户则填入对应的 openid/unionid，手机号则填入对应真实用户手机号（如13123456789）。 |
 | rootId       | String | 用户操作的目的 ID，如点赞等，该字段就是被点赞的消息 ID，如果是投票，就是被投号码的 ID。                                            |
-| userIp       | String | 用户操作的真实外网 IP。                                            |
+| userIp       | String | 用户操作的真实外网 IP（IP 格式支持 IPv4 与 IPv6）。                                            |
 | level            | Int    | <li>0：表示无恶意。</li><li>1 - 4：恶意等级由低到高。</li>                     |
 | riskType         | Array  | 风险类型，详情请参见下文 **riskType 详细说明**。                                                     |
 
@@ -101,10 +101,10 @@
 <https://csec.api.qcloud.com/v2/index.php?Action=ActivityAntiRush
 &<公共请求参数>
 &secretId=AKID****************************q4Zw
-&accountType=1
-&uid=D692D87319F2098C3877C3904B304706
+&accountType=10004
+&uid = BFD81********AD31C95CA75E21365973
 &userIp=127.0.0.1（调用时必须是外网有效 IP 地址）
-&postTime=1553484280（uinx 时间戳，仅需要精确到秒）
+&postTime=1553484280（unix 时间戳，仅需要精确到秒）
 ```
 - **响应示例**
 ```
@@ -114,7 +114,7 @@
     "level ": 1,
     "message": "NoError",
     "postTime": "1553484280",
-    "uid": "D692D87319F2098C3877C3904B304706",
+    "uid": "BFD81********AD31C95CA75E21365973",
     "userIp": "127.0.0.1",
     "riskType": [1]
 }

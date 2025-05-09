@@ -1,45 +1,113 @@
-## 操作场景
+本文为您介绍通过 EMR 控制台快速创建一个 EMR on CVM 集群、提交作业并查看运行结果的操作流程。
+## 准备工作
+1. 在使用 EMR 集群前，需要注册腾讯云账号并完成实名认证，具体操作请参见 [实名认证账号归属介绍](https://cloud.tencent.com/document/product/378/3629)。
+2. 完成对弹性 MapReduce 的服务账号授予系统默认角色 EMR_QCSRole，具体操作请参见 [角色授权](https://cloud.tencent.com/document/product/589/37899)。
+3. 在线账号充值，EMR on CVM 提供两种计费模式：按量计费和包年包月计费，在创建集群前需要进行账号余额充值，确保余额大于等于创建集群所需配置费用（不包含：代金券、折扣卷、优惠券等）；具体操作请参见考 [在线充值](https://cloud.tencent.com/document/product/555/7425)。
 
-本文为您介绍通过 EMR 控制台创建一个 EMR 集群的操作。
+## 创建集群
+登录 [EMR 控制台](https://console.cloud.tencent.com/emr)，在 EMR on CVM 集群列表页单击**创建集群**，在购买页面完成相关配置；当集群列表中集群状态显示为运行中时，表示集群创建成功。
+<table>
+<thead>
+<tr>
+<th>购买步骤</th>
+<th>配置项</th>
+<th>配置项说明</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td rowspan=4>软件配置</td>
+<td>地域</td>
+<td>集群所部署的物理数据中心<br>注意：集群创建后，无法更改地域，请谨慎选择</td>
+<td>北京、上海、广州、南京、成都、硅谷等</td>
+</tr>
+<tr>
+<td>集群类型</td>
+<td>EMR on CVM 支持多种集群类，默认 Hadoop 集群类型</td>
+<td>Hadoop、StarRocks 等</td>
+</tr>
+<tr>
+<td>产品版本</td>
+<td>不同产品版本上捆绑的组件和组件的版本不同</td>
+<td>EMR-V2.7.0 版本中内置的是 Hadoop 2.8.5、Spark 3.2.1 等</td>
+</tr>
+<tr>
+<td>部署组件</td>
+<td>非必选组件，根据自身需求组合搭配自定义部署</td>
+<td>Hive-2.3.9、Impala-3.4.1等</td>
+</tr>
+<tr>
+<td rowspan=4>区域与硬件配置</td>
+<td>计费模式</td>
+<td>集群部署计费模式</td>
+<td>按量计费</td>
+</tr>
+<tr>
+<td>可用区及网络配置</td>
+<td>可用区、集群网络设置<br>注意：集群创建后，无法直接更改可用区，请谨慎选择</td>
+<td>广州七区</td>
+</tr>
+<tr>
+<td>安全登录</td>
+<td>用于设置节点的网络访问控制，安全组同防火墙功能</td>
+<td>创建新安全组</td>
+</tr>
+<tr>
+<td>节点配置</td>
+<td>根据业务需要为不同节点类型选择合适机型配置。详情请参见 <a href="https://cloud.tencent.com/document/product/589/10982">业务评估</a></td>
+<td>开启节点部署高可用</td>
+</tr>
+<tr>
+<td rowspan=3>基础配置</td>
+<td>所属项目</td>
+<td>将当前集群分配给不同的项目组</td>
+<td>集群创建后暂不支持修改所属项目</td>
+</tr>
+<tr>
+<td>集群名称</td>
+<td>集群的名称，可自定义</td>
+<td>EMR-7sx2aqmu</td>
+</tr>
+<tr>
+<td>登录方式</td>
+<td>自定义设置密码方式和关联密钥方式；SSH 密钥仅用于 EMR-UI 快捷入口登录</td>
+<td>密码</td>
+</tr>
+<tr>
+<td>确认配置</td>
+<td>配置清单</td>
+<td>确认所部署信息是否有误</td>
+<td>选中服务协议，单击<strong>立即购买</strong></td>
+</tr>
+</tbody></table>
 
-## 操作步骤
+>! 您可以在 CVM 控制台中查看各节点信息，为保证 EMR 集群的正常运行，请勿在 CVM 控制台中更改节点配置信息。
 
-登录 [EMR 控制台](https://console.cloud.tencent.com/emr)，在集群列表页单击【创建集群】。
+## 提交作业及查看运行结果
+集群创建成功后，您可以在该集群创建并提交作业；本文已提交 spark 任务为例，操作如下。
+>! 在创建 EMR 集群的时候需要在软件配置界面选择 Spark 组件。
+>
+1. 使用 SSH 登录并连接集群（本地系统为 Linux/Mac OS），详情请参见 [登录集群](https://cloud.tencent.com/document/product/589/34358)。
+2. 在 EMR 命令行先使用以下指令切换到 Hadoop 用户，并进入 Spark 安装目录/usr/local/service/spark：
+```
+[root@172 ~]# su hadoop
+[hadoop@172 root]$ cd /usr/local/service/spark
+```
+3. 通过如下指令提交任务并运行：
+```
+/usr/local/service/spark/bin/spark-submit \
+--class org.apache.spark.examples.SparkPi \
+--master yarn \
+--deploy-mode cluster \
+--proxy-user hadoop \
+--driver-memory 1g \
+--executor-memory 1g \
+--executor-cores 1 \
+/usr/local/service/spark/examples/jars/spark-examples*.jar \
+10
+```
+4. 提交作业后，在 EMR on CVM 页面，单击目标集群所在行的**集群服务**；单击 YARN UI 所在行的 **WebUI 链接**。登录认证后即可进入YARN UI 页面；单击目标作业的 **ID**，可以查看作业运行的详情。
 
-### 1. 可用区与软件配置
-- **计费模式**：支持包年包月和按量计费。
- - 包年包月：提前预付 N 个月的产品费用，相比按量付费价格更低。
- - 按量计费：按照使用时长付费，需对账户进行实名认证，在开通时需冻结1小时的费用（代金券不可用作冻结凭证），销毁时退还。
-- **地域和可用区**：目前支持的地域有：广州、上海、北京、新加坡、硅谷、成都、南京、孟买。不同地域的云产品之间内网不互通。
-- **集群类型**：EMR 目前支持三种集群部署方式，分别为：Hadoop 集群、ClickHouse 集群、Druid 集群；**根据实际业务需要选择集群类型进行部署。**
-- **版本和组件**：EMR 推荐了一些常用的 Hadoop 软件搭配，您也可以根据自身需求组合各软件。
-- **Hive 元数据库**：如果选择了 Hive 组件，Hive 元数据库提供了两种存储方式：第一种集群默认，Hive 元数据存储于集群独立购买 MetaDB；第二种是关联外部 Hive 元数据库 ，可选择关联 EMR-MetaDB 或自建 MySQL 数据库，元数据将存储于关联的数据库中，不随集群销毁而销毁。
-![](https://main.qcloudimg.com/raw/a559e1cfe37ee6d317716cc3cee3dae7.png)
-- [**Kerberos 安全集群**](https://cloud.tencent.com/document/product/589/35064)：是否开启集群的 Kerberos 认证功能。一般的个人用户集群无需该功能，默认关闭。
-- [**软件配置**](https://cloud.tencent.com/document/product/589/35655)：按照要求填写参数可实现自定义软件参数创建集群，同时兼容访问外部集群功能，在参数中正确配置访问地址信息即可读写外部集群的数据。单击软件配置处图标可查看相关说明，如下图。
-![](https://main.qcloudimg.com/raw/e2e284ab55692afd3c231511784c993c.png)
-
-### 2. 硬件配置
-- **节点高可用（HA）**：选择【启动高可用】后，Hadoop 集群将会默认开启2个 Master 节点，至少3个 Core 节点，以及3个 Common 节点，节点类型介绍请参见 [节点类型说明](https://cloud.tencent.com/document/product/589/14624)。
-- **硬件配置**：节点规格配置，EMR 提供了多种节点规格，您可以根据业务需要自由选择节点类型、核数、内存、磁盘类型及大小。
->?目前仅 Core 节点支持挂载多种云盘类型（每种云盘类型最多只能选择1次）和多块云盘（最多5块）。
-- **集群网络**：为保证 EMR 集群的安全性，我们将集群各节点放入了一个私有网络中，您需要设置一个私有网络以保证 EMR 集群的正确创建。
-![](https://main.qcloudimg.com/raw/9d2230f6a9baef9a002b3aa4a1864988.png)
-![](https://main.qcloudimg.com/raw/b69e2fdf8c6ed706ada09169f6039aa9.png)
-
-### 3. 基础配置
-
-- **集群名称**：通过设置集群名称，来区分不同的 EMR 集群。
-- **安全组**：安全组具有防火墙功能，用于设置云服务器 CVM 的网络访问控制。如果没有安全组，EMR 会自动帮您新建一个安全组。若已经有在使用的安全组可以直接选择使用。若安全组数量已达到上限无法新建，可删除部分不再使用的安全组。查看已在使用的 [安全组](https://console.cloud.tencent.com/cvm/securitygroup)。
- - 创建安全组：EMR 帮助用户创建一个安全组，开启22和30001端口及必要的内网通信网段。
- - 已有 EMR 安全组：选择已创建的 EMR 安全组作为当前实例的安全组，开启22和30001端口及必要的内网通信网段。
-- **远程登录**：22端口常用于远程登录，新建安全组将默认开启，您可以根据业务需要关闭该端口。
-- **对象存储**：开启对象存储（COS）后，EMR 集群可以直接计算存储在 COS 中的数据，以实现计算存储分离，降低大数据处理成本。为保证 EMR 有权限访问到 COS 中的数据，请输入 COS 的 API 密钥。
-- **添加引导操作**：引导脚本操作方便您在创建集群的过程中执行自定义脚本，以便您修改集群环境、安装第三方软件和使用自有数据。
-- **标签**：您在创建时对集群或节点资源添加标签，以便于管理集群和节点资源，最多可绑定5条，标签键不可重复。
-![](https://main.qcloudimg.com/raw/80c826ac7d1d2cd05163a1f3351fc8ec.png)
-
-### 4. 完成创建
-
-完成以上配置后，单击【购买】进行支付，支付成功后 EMR 集群进入创建过程，在大约10分钟后即可在 EMR 控制台中找到刚创建的集群。
->!您可以在 CVM 控制台中查看各节点的实例信息，为保证 EMR 集群的正常运行，请不要在 CVM 控制台中更改这些实例的配置信息。
+## 销毁集群
+- 当创建的集群不再使用时，可以销毁集群，退还资源；毁集群将强制终止集群所提供的服务，并释放资源。
+- 在 EMR on CVM 页面，选择目标集群的**更多 > 销毁**；在弹出的对话框中，单击**立即销毁**。
